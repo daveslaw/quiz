@@ -2,6 +2,7 @@ import {
 	QuestionContainer,
 	Answers,
 	AnswerContainer,
+	Button,
 } from "./question-item.styles";
 import { useEffect, useState } from "react";
 import { decodeHTMLEntities, shuffle } from "../../library/functions";
@@ -10,22 +11,36 @@ import React from "react";
 
 const QuestionItem = ({ questionUnit }) => {
 	const { question, incorrect_answers, correct_answer } = questionUnit;
-	const [selected, setSelected] = useState(false);
 
 	const [answerArray, setAnswerArray] = useState(
 		shuffle([correct_answer, ...incorrect_answers]).map((answer, index) => {
-			return { text: answer, id: index, selected:  false };
+			return { text: answer, id: index, selected: false };
 		})
 	);
 
-	// const [isActive, setIsActive] = useState(false);
+	const checkAnswer = () => {
+		// Check if correct answer === answer in the array
+		// set isCorrect to true / false in the array
+		//
+		// if selected=false and correct=false - no change
+		//if selected=true and correct=true - change to green , add 1 to score
+		// if selected=true correct=false - change to red
+		// if selected=false correct=true - change to green
+		setAnswerArray((answerArray) =>
+			answerArray.map((answer) => {
+				return answer.text === correct_answer
+					? { ...answer, isCorrect: true }
+					: { ...answer, isCorrect: false };
+			})
+		);
+	};
 
 	const toggleHandler = (event) => {
 		setAnswerArray((answerArray) =>
 			answerArray.map((answer) => {
 				return answer.text === event.target.innerHTML
-					? {...answer, selected: true }
-					: {...answer, selected: false}
+					? { ...answer, selected: true }
+					: { ...answer, selected: false };
 			})
 		);
 
@@ -40,35 +55,26 @@ const QuestionItem = ({ questionUnit }) => {
 		}
 	};
 
-	// const answerChecker = (event) => {
-
-	//
-
-	// 		// } else {
-	// 		// 	console.log("Incorrect")
-	// 		// }
-
-	// 	//  answerArray.map((answer) =>
-	// 	// 	answer.id === event.target.innerHTML
-	// 	// 		?
-	// 	// 		: setAnswerArray(answerArray)
-	// 	// )
-	// };
-
 	useEffect(() => {
-		console.log(answerArray);
+		console.log(answerArray, correct_answer);
 	}, [answerArray]);
 
 	return (
 		<QuestionContainer>
-			<h2>{question}</h2>
+			<h2>{decodeHTMLEntities(question)}</h2>
 			<AnswerContainer>
-				{answerArray.map(({ text, id, selected }) => (
-					<Answers onClick={toggleHandler} selected={selected} key={id}>
+				{answerArray.map(({ text, id, selected, isCorrect }) => (
+					<Answers
+						onClick={toggleHandler}
+						correct={isCorrect}
+						selected={selected}
+						key={id}
+					>
 						{text}
 					</Answers>
 				))}
 			</AnswerContainer>
+			<Button onClick={() => checkAnswer()}>Check answers</Button>
 		</QuestionContainer>
 	);
 };

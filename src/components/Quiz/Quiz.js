@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import QuestionItem from "../QuestionItem/QuestionItem";
+import {Button} from './quiz.styles'
 
 const Quiz = () => {
 	const [quizData, setQuizData] = useState([]);
@@ -24,6 +25,7 @@ const Quiz = () => {
 			{quizData.map((questionUnit) => (
 				<QuestionItem key={questionUnit.question} questionUnit={questionUnit}/>
 			))}
+			<Button>Check answers</Button>
 		</div>
 	);
 };
