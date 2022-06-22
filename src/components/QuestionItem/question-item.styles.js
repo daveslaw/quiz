@@ -12,9 +12,10 @@ export const AnswerContainer = styled.div`
 `;
 
 export const Answers = styled.div`
-	border: grey;
-	background-color: grey;
-	border-radius: 3px;
+	border: black;
+	background-color: ${(props) => (props.selected ? "green" : "red")};
+	border-radius: 5px;
+	cursor: pointer;
 
 	color: black;
 `;
