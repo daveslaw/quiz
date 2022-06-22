@@ -19,7 +19,7 @@ export const AnswerContainer = styled.div`
 
 export const Answers = styled.div`
 	border: black;
-	background-color: ${(props) => (props.selected ? "#D6DBF5" : "white")};
+	background-color: ${(props) => (props.selected  ? "#D6DBF5" : "white")};
 	border-radius: 7.71px;
 	border: 1px solid #293264;
 	cursor: pointer;

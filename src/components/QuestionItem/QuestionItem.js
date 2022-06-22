@@ -11,6 +11,7 @@ import React from "react";
 
 const QuestionItem = ({ questionUnit }) => {
 	const { question, incorrect_answers, correct_answer } = questionUnit;
+	const [score, setScore] = useState(0);
 
 	const [answerArray, setAnswerArray] = useState(
 		shuffle([correct_answer, ...incorrect_answers]).map((answer, index) => {
@@ -18,7 +19,7 @@ const QuestionItem = ({ questionUnit }) => {
 		})
 	);
 
-	const checkAnswer = () => {
+	const checkAnswer = (text) => {
 		// Check if correct answer === answer in the array
 		// set isCorrect to true / false in the array
 		//
@@ -33,6 +34,12 @@ const QuestionItem = ({ questionUnit }) => {
 					: { ...answer, isCorrect: false };
 			})
 		);
+		if (text === correct_answer) {
+			setScore((prevState) => prevState + 1);
+			console.log(score);
+			
+		}
+		console.log(text)
 	};
 
 	const toggleHandler = (event) => {
@@ -56,8 +63,9 @@ const QuestionItem = ({ questionUnit }) => {
 	};
 
 	useEffect(() => {
-		console.log(answerArray, correct_answer);
-	}, [answerArray]);
+		
+		console.log('score:',score);
+	}, []);
 
 	return (
 		<QuestionContainer>
@@ -74,7 +82,7 @@ const QuestionItem = ({ questionUnit }) => {
 					</Answers>
 				))}
 			</AnswerContainer>
-			<Button onClick={() => checkAnswer()}>Check answers</Button>
+			<div onClick={(text) => checkAnswer(text)}>Check answers</div>
 		</QuestionContainer>
 	);
 };
