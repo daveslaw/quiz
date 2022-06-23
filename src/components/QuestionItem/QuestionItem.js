@@ -19,7 +19,7 @@ const QuestionItem = ({ questionUnit }) => {
 		})
 	);
 
-	const checkAnswer = (text) => {
+	const checkAnswer = () => {
 		// Check if correct answer === answer in the array
 		// set isCorrect to true / false in the array
 		//
@@ -33,13 +33,9 @@ const QuestionItem = ({ questionUnit }) => {
 					? { ...answer, isCorrect: true }
 					: { ...answer, isCorrect: false };
 			})
-		);
-		if (text === correct_answer) {
-			setScore((prevState) => prevState + 1);
-			console.log(score);
-			
-		}
-		console.log(text)
+		);			
+		
+		
 	};
 
 	const toggleHandler = (event) => {
@@ -63,9 +59,17 @@ const QuestionItem = ({ questionUnit }) => {
 	};
 
 	useEffect(() => {
-		
-		console.log('score:',score);
-	}, []);
+		answerArray.map((answer) => {
+			if (answer.selected && answer.isCorrect) {
+				return setScore((prevState) => prevState + 1);
+			}
+
+			return null;
+		});
+		console.log(answerArray);
+		console.log(correct_answer)
+		console.log('score',score)
+	}, [answerArray]);
 
 	return (
 		<QuestionContainer>
@@ -81,8 +85,8 @@ const QuestionItem = ({ questionUnit }) => {
 						{text}
 					</Answers>
 				))}
+				<Button onClick={checkAnswer}>Check answers</Button>
 			</AnswerContainer>
-			<div onClick={(text) => checkAnswer(text)}>Check answers</div>
 		</QuestionContainer>
 	);
 };
